@@ -40,8 +40,9 @@ COPY app/* /srv/shiny-server/app/
 
 # permissions
 RUN chown app:app -R /srv/shiny-server/app/
+RUN Rscript -e "list.files()"
 
-# change user
+change user
 USER app
 
 # EXPOSE can be used for local testing, not supported in Heroku's container runtime
@@ -51,4 +52,5 @@ EXPOSE 8080
 ENV PORT=8080
 
 # command we want to run
-CMD ["R", "-e", "shiny::runApp('/srv/shiny-server/app/', host = '0.0.0.0', port=as.numeric(Sys.getenv('PORT')))"]
+#CMD ["R", "-e", "shiny::runApp('/srv/shiny-server/app/', host = '0.0.0.0', port=as.numeric(Sys.getenv('PORT')))"]
+CMD ["/usr/bin/shiny-server"]
