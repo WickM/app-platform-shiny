@@ -5,16 +5,13 @@ FROM rocker/shiny:latest
 LABEL maintainer="Peter Solymos <peter@analythium.io>"
 
 # add system dependencies for packages as needed
-RUN apt-get update -qq && apt-get -y --no-install-recommends install \
-    libxml2-dev \
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    sudo \
+    libcurl4-gnutls-dev \
     libcairo2-dev \
-    libsqlite3-dev \
-    libmariadbd-dev \
-    libpq-dev \
-    libssh2-1-dev \
-    unixodbc-dev \
-    libcurl4-openssl-dev \
+    libxt-dev \
     libssl-dev \
+    libssh2-1-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # we need remotes and renv
@@ -36,14 +33,13 @@ RUN Rscript -e "options(renv.consent = TRUE);renv::restore(lockfile = '/home/app
 RUN rm -f renv.lock
 
 # copy everything inside the app folder
-COPY app/* /srv/shiny-server/app/
+COPY app .
 
 # permissions
-#RUN chown app:app -R /srv/shiny-server/app/
-RUN Rscript -e "list.files()"
+RUN chown app:app -R /home/app
 
-#change user
-#USER app
+# change user
+USER app
 
 # EXPOSE can be used for local testing, not supported in Heroku's container runtime
 EXPOSE 8080
@@ -52,5 +48,4 @@ EXPOSE 8080
 ENV PORT=8080
 
 # command we want to run
-#CMD ["R", "-e", "shiny::runApp('/srv/shiny-server/app/', host = '0.0.0.0', port=as.numeric(Sys.getenv('PORT')))"]
-CMD ["/usr/bin/shiny-server"]
+CMD ["R", "-e", "shiny::runApp('/home/app', host = '0.0.0.0', port=as.numeric(Sys.getenv('PORT')))"]
