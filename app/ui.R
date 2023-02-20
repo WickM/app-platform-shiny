@@ -1,24 +1,21 @@
 ui <- fluidPage(
-  titlePanel("Intervals example with Shiny - on the App Platform"),
+  
+  # Application title
+  titlePanel("Old Faithful Geyser Data"),
+  
+  # Sidebar with a slider input for number of bins 
   sidebarLayout(
     sidebarPanel(
-      sliderInput("bb_x", "Position along x axis",
-        min=min(x), max=max(x), value=range(x),
-        step=round(diff(range(x))/20, 1), animate=TRUE
-      ),
-      sliderInput("bb_y", "Position along y axis",
-        min = min(y), max = max(y), value = range(y),
-        step=round(diff(range(y))/20, 1), animate=TRUE
-      ),
-      sliderInput("bb_d", "Radial distance",
-        min = 0, max = max(d), value = c(0, max(d)/2),
-        step=round(max(d)/20, 1), animate=TRUE
-      ),
-      fileInput("file", "Choose file")
+      sliderInput("bins",
+                  "Number of bins:",
+                  min = 1,
+                  max = 50,
+                  value = 30)
     ),
+    
+    # Show a plot of the generated distribution
     mainPanel(
-      plotOutput("plot"),
-      verbatimTextOutput("fileinfo")
+      plotOutput("distPlot")
     )
   )
 )
