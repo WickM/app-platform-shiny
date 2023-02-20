@@ -42,7 +42,7 @@ COPY app/* /srv/shiny-server/app/
 RUN chown app:app -R /srv/shiny-server/app/
 RUN Rscript -e "list.files()"
 
-change user
+#change user
 USER app
 
 # EXPOSE can be used for local testing, not supported in Heroku's container runtime
