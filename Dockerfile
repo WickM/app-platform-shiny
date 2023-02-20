@@ -39,11 +39,11 @@ RUN rm -f renv.lock
 COPY app/* /srv/shiny-server/app/
 
 # permissions
-RUN chown app:app -R /srv/shiny-server/app/
+#RUN chown app:app -R /srv/shiny-server/app/
 RUN Rscript -e "list.files()"
 
 #change user
-USER app
+#USER app
 
 # EXPOSE can be used for local testing, not supported in Heroku's container runtime
 EXPOSE 8080
